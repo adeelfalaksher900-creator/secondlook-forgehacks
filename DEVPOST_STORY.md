@@ -1,3 +1,8 @@
+## Demo and source
+[Watch the 2:40 continuous 1080p demo](https://secondlook-forgehacks.vercel.app/demo.html) · [Try SecondLook](https://secondlook-forgehacks.vercel.app/) · [Public source](https://github.com/adeelfalaksher900-creator/secondlook-forgehacks)
+
+The public visual cut shows actual app interaction with explanatory captions. It is silent; ElevenLabs narration and YouTube/Vimeo publication are pending.
+
 ## Inspiration
 A scholarship offer. A missed delivery. A message that looks like it came from university support. Students receive requests like these in the same inbox as legitimate opportunities. The hard part is deciding what to do before clicking, paying, or sharing a code.
 

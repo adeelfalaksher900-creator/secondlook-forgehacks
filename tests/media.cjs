@@ -1,1 +1,36 @@
-const{chromium}=require('playwright');const fs=require('fs');(async()=>{const b=await chromium.launch({executablePath:process.env.SECONDLOOK_BROWSER_PATH||undefined,args:['--no-sandbox']});const p=await b.newPage({viewport:{width:1920,height:1080},deviceScaleFactor:1});await p.goto('file://'+process.cwd()+'/media/architecture.html');await p.screenshot({path:'media/gallery/13-architecture.png'});await p.goto('http://127.0.0.1:4186');await p.waitForFunction(()=>!document.getElementById('analyse').disabled);await p.emulateMedia({reducedMotion:'reduce'});await p.locator('[data-example="scholarship"]').click();await p.locator('#analyse').click();await p.locator('summary').click();await p.locator('.ml-details').scrollIntoViewIfNeeded();await p.screenshot({path:'media/gallery/14-evidence-and-next-step.png'});await p.setViewportSize({width:390,height:844});await p.locator('[data-view="check"]').click();await p.locator('#clear').click();await p.screenshot({path:'media/mobile.png',fullPage:true});await p.setViewportSize({width:1920,height:1080});await p.setContent(`<html><body style="margin:0;background:#f5f6f2;color:#172b2a;font-family:Arial;padding:75px;box-sizing:border-box"><p style="letter-spacing:3px;font-size:15px;color:#245b47">SECONDLOOK / BUILT FOR REAL LIFE</p><h1 style="font:64px Georgia;margin:20px 0">A second look, wherever you are.</h1><div style="display:flex;gap:120px;align-items:center"><img src="data:image/png;base64,${fs.readFileSync('media/mobile.png').toString('base64')}" style="width:290px;height:620px;object-fit:cover;object-position:top;border:1px solid #dce3dc;border-radius:12px"><div style="max-width:850px"><h2 style="font:42px Georgia">The same private workflow.<br>A smaller screen.</h2><p style="font-size:26px;color:#536763;line-height:1.6">Named controls. Visible keyboard focus.<br>Text evidence and practical verification steps.<br>No account. No message upload.</p><p style="font-size:18px;color:#536763">Actual responsive app capture · 390 × 844 viewport</p></div></div></body></html>`);await p.locator('img').evaluate(e=>e.decode());await p.screenshot({path:'media/gallery/15-mobile-workflow.png'});await b.close()})().catch(e=>{console.error(e);process.exit(1)});
+const { chromium } = require("playwright");
+const fs = require("fs");
+(async () => {
+  const b = await chromium.launch({
+    executablePath: process.env.SECONDLOOK_BROWSER_PATH || undefined,
+    args: ["--no-sandbox"],
+  });
+  const p = await b.newPage({
+    viewport: { width: 1920, height: 1080 },
+    deviceScaleFactor: 1,
+  });
+  await p.goto("file://" + process.cwd() + "/media/architecture.html");
+  await p.screenshot({ path: "media/gallery/13-architecture.png" });
+  await p.goto("http://127.0.0.1:4186");
+  await p.waitForFunction(() => !document.getElementById("analyse").disabled);
+  await p.emulateMedia({ reducedMotion: "reduce" });
+  await p.locator('[data-example="scholarship"]').click();
+  await p.locator("#analyse").click();
+  await p.locator("summary").click();
+  await p.locator(".ml-details").scrollIntoViewIfNeeded();
+  await p.screenshot({ path: "media/gallery/14-evidence-and-next-step.png" });
+  await p.setViewportSize({ width: 390, height: 844 });
+  await p.locator('[data-view="check"]').click();
+  await p.locator("#clear").click();
+  await p.screenshot({ path: "media/mobile.png", fullPage: true });
+  await p.setViewportSize({ width: 1920, height: 1080 });
+  await p.setContent(
+    `<html><body style="margin:0;background:#f5f6f2;color:#172b2a;font-family:Arial;padding:75px;box-sizing:border-box"><p style="letter-spacing:3px;font-size:15px;color:#245b47">SECONDLOOK / BUILT FOR REAL LIFE</p><h1 style="font:64px Georgia;margin:20px 0">A second look, wherever you are.</h1><div style="display:flex;gap:120px;align-items:center"><img src="data:image/png;base64,${fs.readFileSync("media/mobile.png").toString("base64")}" style="width:290px;height:620px;object-fit:cover;object-position:top;border:1px solid #dce3dc;border-radius:12px"><div style="max-width:850px"><h2 style="font:42px Georgia">The same private workflow.<br>A smaller screen.</h2><p style="font-size:26px;color:#536763;line-height:1.6">Named controls. Visible keyboard focus.<br>Text evidence and practical verification steps.<br>No account. No message upload.</p><p style="font-size:18px;color:#536763">Actual responsive app capture · 390 × 844 viewport</p></div></div></body></html>`,
+  );
+  await p.locator("img").evaluate((e) => e.decode());
+  await p.screenshot({ path: "media/gallery/15-mobile-workflow.png" });
+  await b.close();
+})().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

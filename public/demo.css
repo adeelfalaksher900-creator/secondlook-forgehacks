@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f5f6f2;
+  color: #172b2a;
+  font:
+    18px/1.6 Arial,
+    sans-serif;
+}
+main {
+  max-width: 1280px;
+  margin: auto;
+  padding: 50px 30px;
+}
+a {
+  color: #245b47;
+  text-underline-offset: 4px;
+}
+.eyebrow {
+  margin-top: 35px;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+h1 {
+  font:
+    clamp(40px, 5vw, 70px) / 1.1 Georgia,
+    serif;
+  letter-spacing: -1px;
+}
+video {
+  display: block;
+  width: 100%;
+  border: 1px solid #dce3dc;
+  border-radius: 12px;
+  background: #172b2a;
+}
+.note {
+  font-size: 15px;
+  color: #536763;
+}
+.links {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+a:focus-visible {
+  outline: 3px solid #245b47;
+  outline-offset: 5px;
+}

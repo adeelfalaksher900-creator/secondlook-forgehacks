@@ -1,5 +1,136 @@
-export function tokens(text){return text.normalize('NFKC').toLowerCase().match(/[a-z0-9]{2,}/g)||[]}
-export function infer(text,m){const t=tokens(text),counts=new Map();for(let i=0;i<t.length;i++){for(const f of [t[i],i<t.length-1?t[i]+' '+t[i+1]:null]){if(f&&Object.hasOwn(m.vocabulary,f)){const k=m.vocabulary[f];counts.set(k,(counts.get(k)||0)+1)}}}let sum=0;const vec=[];for(const[k,n]of counts){const v=(1+Math.log(n))*m.idf[k];vec.push([k,v]);sum+=v*v}const norm=Math.sqrt(sum)||1;let z=m.intercept;const evidence=[];const names=Object.keys(m.vocabulary);const reverse=new Map(names.map(k=>[m.vocabulary[k],k]));for(const[k,v]of vec){const c=v/norm*m.weights[k];z+=c;if(c>.035)evidence.push({phrase:reverse.get(k),contribution:c})}evidence.sort((a,b)=>b.contribution-a.contribution);const known=t.filter(x=>Object.hasOwn(m.vocabulary,x)).length;return{probability:1/(1+Math.exp(-z)),coverage:t.length?known/t.length:0,evidence:evidence.slice(0,5),tokenCount:t.length}}
-const rules=[{id:'secret',title:'A request for private access',re:/\b(otp|password|verification code|one.time code|login code|pin number)\b/i,why:'A password or one-time code can give someone access to your account.'},{id:'payment',title:'Money or payment requested',re:/\b(pay|payment|transfer|fee|gift card|crypto|wire|bank details)\b/i,why:'Verify the request through a contact or service you already know before paying.'},{id:'pressure',title:'Pressure to act quickly',re:/\b(urgent|immediately|within \d+|expire|suspended|last chance|act now|final notice)\b/i,why:'Urgency can make it harder to pause and check the sender.'},{id:'reward',title:'An unexpected reward',re:/\b(won|winner|prize|claim your|cash reward|selected for)\b/i,why:'Unexpected rewards are a reason to verify, especially when money is requested.'},{id:'secrecy',title:'A request to keep it quiet',re:/\b(do not tell|don't tell|keep.*secret|confidential)\b/i,why:'Check unusual confidential requests with the person through another channel.'}];
-export function analyse(text,m){const normalized=text.normalize('NFKC');const prediction=infer(normalized,m);const signals=rules.flatMap(r=>{const match=normalized.match(r.re);return match?[{id:r.id,title:r.title,excerpt:match[0],why:r.why}]:[]});const urls=normalized.match(/https?:\/\/[^\s<>"']+|\bwww\.[^\s<>"']+/gi)||[];const links=urls.slice(0,12).map(raw=>{let u;try{u=new URL(raw.startsWith('www.')?'https://'+raw:raw)}catch{return{display:raw,note:'Could not parse this address'}}const reasons=[];if(u.protocol==='http:')reasons.push('Unencrypted HTTP');if(u.hostname.includes('xn--'))reasons.push('Internationalized domain: check spelling');if(/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname))reasons.push('IP address instead of a named domain');if(u.username||u.password)reasons.push('Address contains login information');return{display:u.hostname,path:u.pathname,note:reasons.join(' · ')||'The domain has not been verified',flagged:reasons.length>0}});
- const nonLatin=/[\u0400-\u052f\u0600-\u06ff\u0900-\u097f\u4e00-\u9fff]/.test(normalized);const limited=prediction.tokenCount<4||prediction.coverage<.3||nonLatin;const elevated=signals.length>=2||signals.some(s=>s.id==='secret')||links.some(l=>l.flagged)||(!limited&&prediction.probability>=.5);return{...prediction,signals,links,limited,status:elevated?'Pause and verify':limited?'Not enough context':'Verify the sender',message:elevated?'Several cues deserve a closer look. Check the request before responding.':limited?'This model needs more familiar English text. Independent verification is still the best next step.':'Fewer cues were detected. That does not establish who sent this message or whether it is safe.'}}
+export function tokens(text) {
+  return (
+    text
+      .normalize("NFKC")
+      .toLowerCase()
+      .match(/[a-z0-9]{2,}/g) || []
+  );
+}
+export function infer(text, m) {
+  const t = tokens(text),
+    counts = new Map();
+  for (let i = 0; i < t.length; i++) {
+    for (const f of [t[i], i < t.length - 1 ? t[i] + " " + t[i + 1] : null]) {
+      if (f && Object.hasOwn(m.vocabulary, f)) {
+        const k = m.vocabulary[f];
+        counts.set(k, (counts.get(k) || 0) + 1);
+      }
+    }
+  }
+  let sum = 0;
+  const vec = [];
+  for (const [k, n] of counts) {
+    const v = (1 + Math.log(n)) * m.idf[k];
+    vec.push([k, v]);
+    sum += v * v;
+  }
+  const norm = Math.sqrt(sum) || 1;
+  let z = m.intercept;
+  const evidence = [];
+  const names = Object.keys(m.vocabulary);
+  const reverse = new Map(names.map((k) => [m.vocabulary[k], k]));
+  for (const [k, v] of vec) {
+    const c = (v / norm) * m.weights[k];
+    z += c;
+    if (c > 0.035) evidence.push({ phrase: reverse.get(k), contribution: c });
+  }
+  evidence.sort((a, b) => b.contribution - a.contribution);
+  const known = t.filter((x) => Object.hasOwn(m.vocabulary, x)).length;
+  return {
+    probability: 1 / (1 + Math.exp(-z)),
+    coverage: t.length ? known / t.length : 0,
+    evidence: evidence.slice(0, 5),
+    tokenCount: t.length,
+  };
+}
+const rules = [
+  {
+    id: "secret",
+    title: "A request for private access",
+    re: /\b(otp|password|verification code|one.time code|login code|pin number)\b/i,
+    why: "A password or one-time code can give someone access to your account.",
+  },
+  {
+    id: "payment",
+    title: "Money or payment requested",
+    re: /\b(pay|payment|transfer|fee|gift card|crypto|wire|bank details)\b/i,
+    why: "Verify the request through a contact or service you already know before paying.",
+  },
+  {
+    id: "pressure",
+    title: "Pressure to act quickly",
+    re: /\b(urgent|immediately|within \d+|expire|suspended|last chance|act now|final notice)\b/i,
+    why: "Urgency can make it harder to pause and check the sender.",
+  },
+  {
+    id: "reward",
+    title: "An unexpected reward",
+    re: /\b(won|winner|prize|claim your|cash reward|selected for)\b/i,
+    why: "Unexpected rewards are a reason to verify, especially when money is requested.",
+  },
+  {
+    id: "secrecy",
+    title: "A request to keep it quiet",
+    re: /\b(do not tell|don't tell|keep.*secret|confidential)\b/i,
+    why: "Check unusual confidential requests with the person through another channel.",
+  },
+];
+export function analyse(text, m) {
+  const normalized = text.normalize("NFKC");
+  const prediction = infer(normalized, m);
+  const signals = rules.flatMap((r) => {
+    const match = normalized.match(r.re);
+    return match
+      ? [{ id: r.id, title: r.title, excerpt: match[0], why: r.why }]
+      : [];
+  });
+  const urls =
+    normalized.match(/https?:\/\/[^\s<>"']+|\bwww\.[^\s<>"']+/gi) || [];
+  const links = urls.slice(0, 12).map((raw) => {
+    let u;
+    try {
+      u = new URL(raw.startsWith("www.") ? "https://" + raw : raw);
+    } catch {
+      return { display: raw, note: "Could not parse this address" };
+    }
+    const reasons = [];
+    if (u.protocol === "http:") reasons.push("Unencrypted HTTP");
+    if (u.hostname.includes("xn--"))
+      reasons.push("Internationalized domain: check spelling");
+    if (/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname))
+      reasons.push("IP address instead of a named domain");
+    if (u.username || u.password)
+      reasons.push("Address contains login information");
+    return {
+      display: u.hostname,
+      path: u.pathname,
+      note: reasons.join(" · ") || "The domain has not been verified",
+      flagged: reasons.length > 0,
+    };
+  });
+  const nonLatin =
+    /[\u0400-\u052f\u0600-\u06ff\u0900-\u097f\u4e00-\u9fff]/.test(normalized);
+  const limited =
+    prediction.tokenCount < 4 || prediction.coverage < 0.3 || nonLatin;
+  const elevated =
+    signals.length >= 2 ||
+    signals.some((s) => s.id === "secret") ||
+    links.some((l) => l.flagged) ||
+    (!limited && prediction.probability >= 0.5);
+  return {
+    ...prediction,
+    signals,
+    links,
+    limited,
+    status: elevated
+      ? "Pause and verify"
+      : limited
+        ? "Not enough context"
+        : "Verify the sender",
+    message: elevated
+      ? "Several cues deserve a closer look. Check the request before responding."
+      : limited
+        ? "This model needs more familiar English text. Independent verification is still the best next step."
+        : "Fewer cues were detected. That does not establish who sent this message or whether it is safe.",
+  };
+}

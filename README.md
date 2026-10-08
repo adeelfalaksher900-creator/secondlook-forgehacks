@@ -8,7 +8,7 @@ SecondLook helps students and everyday readers pause before acting on a convinci
 
 Open the deployed app, select **Scholarship fee**, and choose **Check this message**. Review the payment, urgency, and secrecy cues; expand the model evidence; then open the verification guide. Compare **Study group**: fewer cues still does not verify the sender.
 
-[Open SecondLook](https://secondlook-forgehacks.vercel.app/) · [Public source](https://github.com/adeelfalaksher900-creator/secondlook-forgehacks). Demo status and publication receipts are recorded in `docs/publishing.json`.
+[Open SecondLook](https://secondlook-forgehacks.vercel.app/) · [Watch the 2:40 demo](https://secondlook-forgehacks.vercel.app/demo.html) · [Public source](https://github.com/adeelfalaksher900-creator/secondlook-forgehacks). Demo status and publication receipts are recorded in `docs/publishing.json`.
 
 ## Run locally
 
@@ -88,3 +88,19 @@ The shipped value is a low-friction private way to inspect a request and decide 
 Project code: MIT (`LICENSE`). Dataset-derived fixtures: CC BY 4.0, attribution above. Third-party tooling licenses and media provenance: `docs/third-party.md`.
 
 Browser development checks require `npm install` and `npx playwright install chromium`. Run checks and capture scripts from the repository root while the local server is running. Set `SECONDLOOK_BROWSER_PATH` only when using a custom Chromium executable. Automated axe checks need the project development dependencies.
+
+
+## Reproduce the continuous demo
+
+With the app server running and development dependencies installed:
+
+```sh
+node tests/record.cjs
+ffmpeg -i video/assets/workflow.webm -vf "crop=1440:810:0:0,scale=1920:1080:flags=lanczos,fps=30,tpad=stop_mode=clone:stop_duration=1" -t 160 -c:v libx264 -crf 18 -g 30 -keyint_min 30 -movflags +faststart video/assets/workflow.mp4
+npx --yes hyperframes@0.8.141 check video
+npx --yes hyperframes@0.8.141 render video --fps 30 --quality high --output media/SecondLook_Visual_Demo_1080p.mp4
+```
+
+The capture uses actual app actions and records pointer movement; HyperFrames renders 4,800 frames with deterministic title and caption animations. The 1440×810 workflow capture is cropped from Playwright’s padded recording and scaled into the 1920×1080 composition. The current visual cut is silent; ElevenLabs narration and YouTube/Vimeo publication are pending. Do not label this an ElevenLabs-narrated video.
+
+The public video player serves a web-optimized 1080p copy. Video binaries are release artifacts, not bundled source; to preview your own render locally, copy the MP4 to `public/demo.mp4` and your poster to `public/demo-poster.png`.

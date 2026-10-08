@@ -1,1 +1,14 @@
-{"demo":"https://secondlook-forgehacks.vercel.app","github":"https://github.com/adeelfalaksher900-creator/secondlook-forgehacks","commit":"ceff74095298089dab190eb1a7387ec9f203d89b","devpost_preview":"https://devpost.com/software/secondlook-oumnzx","submission_status":"draft; do not submit","video_status":"in production"}
+{
+  "demo": "https://secondlook-forgehacks.vercel.app",
+  "github": "https://github.com/adeelfalaksher900-creator/secondlook-forgehacks",
+  "devpost_preview": "https://devpost.com/software/secondlook-oumnzx",
+  "submission_status": "draft; do not submit",
+  "video_status": "public silent visual cut; ElevenLabs narration and YouTube/Vimeo publication pending",
+  "team_members_verified": [
+    "Adeel Falak Sher",
+    "Raouf Khalid"
+  ],
+  "repository_ref": "main",
+  "public_video": "https://secondlook-forgehacks.vercel.app/demo.html",
+  "media_deployment": "dpl_GrB3DLaH3EaGUVx6s24Tb3xtxfRp"
+}

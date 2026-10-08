@@ -1,1 +1,45 @@
-import fs from 'node:fs';import assert from'node:assert/strict';import{infer,analyse}from'../public/engine.js';const m=JSON.parse(fs.readFileSync(new URL('../public/model.json',import.meta.url)));const fixtures=JSON.parse(fs.readFileSync(new URL('parity.json',import.meta.url)));let max=0;for(const f of fixtures){const err=Math.abs(infer(f.text,m).probability-f.probability);max=Math.max(err,max);assert.ok(err<1e-10)}assert.equal(analyse('',m).limited,true);assert.equal(analyse('مرحبا كيف حالك هذا اختبار',m).limited,true);assert.equal(analyse('Send your verification code immediately',m).status,'Pause and verify');assert.equal(analyse('Pay the fee now at http://192.0.2.4/claim',m).links[0].flagged,true);assert.equal(analyse('Meet tomorrow at the library to study together',m).status,'Verify the sender');assert.equal(analyse('my password reset request was cancelled',m).signals[0].id,'secret');console.log(JSON.stringify({parity_messages:fixtures.length,max_probability_difference:max,behavior_checks:6,result:'passed'},null,2));
+import fs from "node:fs";
+import assert from "node:assert/strict";
+import { infer, analyse } from "../public/engine.js";
+const m = JSON.parse(
+  fs.readFileSync(new URL("../public/model.json", import.meta.url)),
+);
+const fixtures = JSON.parse(
+  fs.readFileSync(new URL("parity.json", import.meta.url)),
+);
+let max = 0;
+for (const f of fixtures) {
+  const err = Math.abs(infer(f.text, m).probability - f.probability);
+  max = Math.max(err, max);
+  assert.ok(err < 1e-10);
+}
+assert.equal(analyse("", m).limited, true);
+assert.equal(analyse("مرحبا كيف حالك هذا اختبار", m).limited, true);
+assert.equal(
+  analyse("Send your verification code immediately", m).status,
+  "Pause and verify",
+);
+assert.equal(
+  analyse("Pay the fee now at http://192.0.2.4/claim", m).links[0].flagged,
+  true,
+);
+assert.equal(
+  analyse("Meet tomorrow at the library to study together", m).status,
+  "Verify the sender",
+);
+assert.equal(
+  analyse("my password reset request was cancelled", m).signals[0].id,
+  "secret",
+);
+console.log(
+  JSON.stringify(
+    {
+      parity_messages: fixtures.length,
+      max_probability_difference: max,
+      behavior_checks: 6,
+      result: "passed",
+    },
+    null,
+    2,
+  ),
+);

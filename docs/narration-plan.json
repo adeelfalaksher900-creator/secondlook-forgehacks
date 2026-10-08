@@ -1,0 +1,11 @@
+{
+  "status": "pending account access and verification of free credit availability",
+  "provider": "ElevenLabs",
+  "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
+  "voice_name": "Liam - Energetic, Social Media Creator",
+  "selection_basis": "Listed by the ElevenLabs connector as young adult, warm, confident English voice; stock voice, no cloning",
+  "script": "NARRATION.txt",
+  "word_count": 377,
+  "target_seconds": 160,
+  "generation_performed": false
+}

@@ -1,1 +1,250 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A private second look at suspicious messages. Browser-based machine learning, visible evidence, and a plan to verify."><title>SecondLook — Check before you click</title><link rel="stylesheet" href="styles.css"><script type="module" src="app.js"></script></head><body><a class="skip" href="#message">Skip to message</a><div class="layout"><aside><a class="brand" href="index.html"><span class="brand-icon">SL</span>SecondLook<span class="beta">BETA</span></a><p class="nav-label">YOUR WORKSPACE</p><nav aria-label="Main"><button class="nav active" data-view="check">Message check</button><button class="nav" data-view="guide">Verification guide</button><button class="nav" data-view="model">Behind the model</button></nav><div class="side-bottom"><div class="privacy-dot"></div><strong>Private by design</strong><p>Your message stays in this browser. No account. No upload.</p><span class="tiny">FORGEHACKS 2026 · AI + CYBERSECURITY</span></div></aside><main><header><span class="breadcrumb">Workspace <span>/</span> <b id="crumb">Message check</b></span><span class="local"><i></i> Runs on your device</span></header><section id="check" class="view"><div class="intro"><div><p class="eyebrow">A MOMENT OF CLARITY</p><h1>Something feels off?<br>Take a second look.</h1><p class="lead">Understand the cues in a message.<br>Then choose a safer next step.</p></div><div class="intro-note"><span>01 / CHECK</span><p>Pause.<br>Read the evidence.<br>Verify independently.</p></div></div><div class="workspace"><div class="composer card"><div class="card-head"><h2>Your message</h2><span class="pill">ENGLISH · TEXT</span></div><label for="message">Paste a message you want to check</label><textarea id="message" maxlength="6000" placeholder="Paste an email, text, or direct message here…"></textarea><div class="input-bottom"><span id="count">0 / 6,000</span><button id="clear" class="text-button">Clear</button></div><p class="input-note">Remove personal details first. Links are read as text and never opened.</p><button class="primary" id="analyse" disabled>Loading local model… <span>↗</span></button><p id="error" role="alert"></p><div class="examples"><span class="eyebrow">OR TRY AN EXAMPLE</span><div><button data-example="scholarship">Scholarship fee</button><button data-example="parcel">Missed delivery</button><button data-example="account">Account code</button><button data-example="ordinary">Study group</button></div></div></div><section class="result card" id="result" aria-label="Message analysis" aria-live="polite"><div class="empty"><div class="empty-mark">?</div><p class="eyebrow">YOUR SECOND LOOK</p><h2>Clarity starts here.</h2><p>Your evidence and verification plan<br>will appear after you check a message.</p><div class="empty-steps"><span>01<br><b>Read the cues</b></span><span>02<br><b>Check the source</b></span><span>03<br><b>Choose a next step</b></span></div></div></section></div><div class="footer-note"><span>Privacy is the default.</span><p>A triage tool, not a safety guarantee. SecondLook cannot verify identities or detect AI-generated text.</p></div></section><section id="guide" class="view" hidden><p class="eyebrow">KEEP YOUR NEXT STEP SIMPLE</p><h1>Verify through a<br>channel you trust.</h1><p class="lead">A convincing message is not proof of identity.</p><div class="guide-grid"><article class="card"><span class="step-number">01</span><h2>Pause the conversation</h2><p>Don't send money, passwords, or one-time codes while you check. Don't follow a link just because it appears in a message.</p></article><article class="card"><span class="step-number">02</span><h2>Find your own contact</h2><p>Use an official app, a saved contact, or a website address you already know. Avoid contact details supplied in the suspicious message.</p></article><article class="card"><span class="step-number">03</span><h2>Ask about the request</h2><p>Confirm both the identity and the specific action being requested. A familiar name, logo, voice, or writing style can be impersonated.</p></article><article class="card"><span class="step-number">04</span><h2>If you've already acted</h2><p>Contact the service through its official support channel. If money was sent, contact your payment provider promptly. Change exposed passwords through the official app.</p></article></div><div class="source-links">Further guidance: <a href="https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank" rel="noopener noreferrer">FTC phishing guide ↗</a></div></section><section id="model" class="view" hidden><p class="eyebrow">OPEN, EXPLAINABLE, LOCAL</p><h1>Evidence over<br>black-box answers.</h1><p class="lead">A small trained model. A transparent decision process.</p><div class="metric-grid"><article class="card"><span>Spam precision</span><strong>97.2<span>%</span></strong><p>103 of 106 spam predictions correct</p></article><article class="card"><span>Spam recall</span><strong>81.7<span>%</span></strong><p>103 of 126 spam messages detected</p></article><article class="card"><span>Held-out messages</span><strong>1,026</strong><p>20% split · fixed random seed 42</p></article></div><div class="model-grid"><article class="card"><h2>How a second look works</h2><ol class="pipeline"><li><b>Text stays in your browser</b><span>Unicode normalization and English word tokenization.</span></li><li><b>Trained language patterns</b><span>TF-IDF word and phrase features → logistic regression.</span></li><li><b>Independent checks</b><span>Requests for codes, payments, urgency, and link structure.</span></li><li><b>Your verification plan</b><span>Evidence and next steps. Never a “safe” verdict.</span></li></ol></article><article class="card"><h2>Know the limits</h2><p>Trained on the historical UCI SMS Spam Collection. Spam labels are not fraud labels. These results do not establish performance on modern scams, emails, or AI impersonation.</p><p>Duplicates were removed before the split. Near-duplicates may remain. Short, unfamiliar, and non-English messages receive a limited-context notice.</p><p>No external URL reputation checks, identity verification, or AI-content detection. No claimed reduction in fraud.</p><a href="https://archive.ics.uci.edu/dataset/228/sms%2Bspam%2Bcollection" target="_blank" rel="noopener noreferrer">Dataset & attribution · CC BY 4.0 ↗</a></article></div></section></main></div></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A private second look at suspicious messages. Browser-based machine learning, visible evidence, and a plan to verify."
+    />
+    <title>SecondLook — Check before you click</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#message">Skip to message</a>
+    <div class="layout">
+      <aside>
+        <a class="brand" href="index.html"
+          ><span class="brand-icon">SL</span>SecondLook<span class="beta"
+            >BETA</span
+          ></a
+        >
+        <p class="nav-label">YOUR WORKSPACE</p>
+        <nav aria-label="Main">
+          <button class="nav active" data-view="check">Message check</button
+          ><button class="nav" data-view="guide">Verification guide</button
+          ><button class="nav" data-view="model">Behind the model</button>
+        </nav>
+        <div class="side-bottom">
+          <div class="privacy-dot"></div>
+          <strong>Private by design</strong>
+          <p>Your message stays in this browser. No account. No upload.</p>
+          <span class="tiny">FORGEHACKS 2026 · AI + CYBERSECURITY</span>
+        </div>
+      </aside>
+      <main>
+        <header>
+          <span class="breadcrumb"
+            >Workspace <span>/</span> <b id="crumb">Message check</b></span
+          ><span class="local"><i></i> Runs on your device</span>
+        </header>
+        <section id="check" class="view">
+          <div class="intro">
+            <div>
+              <p class="eyebrow">A MOMENT OF CLARITY</p>
+              <h1>Something feels off?<br />Take a second look.</h1>
+              <p class="lead">
+                Understand the cues in a message.<br />Then choose a safer next
+                step.
+              </p>
+            </div>
+            <div class="intro-note">
+              <span>01 / CHECK</span>
+              <p>Pause.<br />Read the evidence.<br />Verify independently.</p>
+            </div>
+          </div>
+          <div class="workspace">
+            <div class="composer card">
+              <div class="card-head">
+                <h2>Your message</h2>
+                <span class="pill">ENGLISH · TEXT</span>
+              </div>
+              <label for="message">Paste a message you want to check</label
+              ><textarea
+                id="message"
+                maxlength="6000"
+                placeholder="Paste an email, text, or direct message here…"
+              ></textarea>
+              <div class="input-bottom">
+                <span id="count">0 / 6,000</span
+                ><button id="clear" class="text-button">Clear</button>
+              </div>
+              <p class="input-note">
+                Remove personal details first. Links are read as text and never
+                opened.
+              </p>
+              <button class="primary" id="analyse" disabled>
+                Loading local model… <span>↗</span>
+              </button>
+              <p id="error" role="alert"></p>
+              <div class="examples">
+                <span class="eyebrow">OR TRY AN EXAMPLE</span>
+                <div>
+                  <button data-example="scholarship">Scholarship fee</button
+                  ><button data-example="parcel">Missed delivery</button
+                  ><button data-example="account">Account code</button
+                  ><button data-example="ordinary">Study group</button>
+                </div>
+              </div>
+            </div>
+            <section
+              class="result card"
+              id="result"
+              aria-label="Message analysis"
+              aria-live="polite"
+            >
+              <div class="empty">
+                <div class="empty-mark">?</div>
+                <p class="eyebrow">YOUR SECOND LOOK</p>
+                <h2>Clarity starts here.</h2>
+                <p>
+                  Your evidence and verification plan<br />will appear after you
+                  check a message.
+                </p>
+                <div class="empty-steps">
+                  <span>01<br /><b>Read the cues</b></span
+                  ><span>02<br /><b>Check the source</b></span
+                  ><span>03<br /><b>Choose a next step</b></span>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="footer-note">
+            <span>Privacy is the default.</span>
+            <p>
+              A triage tool, not a safety guarantee. SecondLook cannot verify
+              identities or detect AI-generated text.
+            </p>
+          </div>
+        </section>
+        <section id="guide" class="view" hidden>
+          <p class="eyebrow">KEEP YOUR NEXT STEP SIMPLE</p>
+          <h1>Verify through a<br />channel you trust.</h1>
+          <p class="lead">A convincing message is not proof of identity.</p>
+          <div class="guide-grid">
+            <article class="card">
+              <span class="step-number">01</span>
+              <h2>Pause the conversation</h2>
+              <p>
+                Don't send money, passwords, or one-time codes while you check.
+                Don't follow a link just because it appears in a message.
+              </p>
+            </article>
+            <article class="card">
+              <span class="step-number">02</span>
+              <h2>Find your own contact</h2>
+              <p>
+                Use an official app, a saved contact, or a website address you
+                already know. Avoid contact details supplied in the suspicious
+                message.
+              </p>
+            </article>
+            <article class="card">
+              <span class="step-number">03</span>
+              <h2>Ask about the request</h2>
+              <p>
+                Confirm both the identity and the specific action being
+                requested. A familiar name, logo, voice, or writing style can be
+                impersonated.
+              </p>
+            </article>
+            <article class="card">
+              <span class="step-number">04</span>
+              <h2>If you've already acted</h2>
+              <p>
+                Contact the service through its official support channel. If
+                money was sent, contact your payment provider promptly. Change
+                exposed passwords through the official app.
+              </p>
+            </article>
+          </div>
+          <div class="source-links">
+            Further guidance:
+            <a
+              href="https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams"
+              target="_blank"
+              rel="noopener noreferrer"
+              >FTC phishing guide ↗</a
+            >
+          </div>
+        </section>
+        <section id="model" class="view" hidden>
+          <p class="eyebrow">OPEN, EXPLAINABLE, LOCAL</p>
+          <h1>Evidence over<br />black-box answers.</h1>
+          <p class="lead">
+            A small trained model. A transparent decision process.
+          </p>
+          <div class="metric-grid">
+            <article class="card">
+              <span>Spam precision</span><strong>97.2<span>%</span></strong>
+              <p>103 of 106 spam predictions correct</p>
+            </article>
+            <article class="card">
+              <span>Spam recall</span><strong>81.7<span>%</span></strong>
+              <p>103 of 126 spam messages detected</p>
+            </article>
+            <article class="card">
+              <span>Held-out messages</span><strong>1,026</strong>
+              <p>20% split · fixed random seed 42</p>
+            </article>
+          </div>
+          <div class="model-grid">
+            <article class="card">
+              <h2>How a second look works</h2>
+              <ol class="pipeline">
+                <li>
+                  <b>Text stays in your browser</b
+                  ><span
+                    >Unicode normalization and English word tokenization.</span
+                  >
+                </li>
+                <li>
+                  <b>Trained language patterns</b
+                  ><span
+                    >TF-IDF word and phrase features → logistic
+                    regression.</span
+                  >
+                </li>
+                <li>
+                  <b>Independent checks</b
+                  ><span
+                    >Requests for codes, payments, urgency, and link
+                    structure.</span
+                  >
+                </li>
+                <li>
+                  <b>Your verification plan</b
+                  ><span>Evidence and next steps. Never a “safe” verdict.</span>
+                </li>
+              </ol>
+            </article>
+            <article class="card">
+              <h2>Know the limits</h2>
+              <p>
+                Trained on the historical UCI SMS Spam Collection. Spam labels
+                are not fraud labels. These results do not establish performance
+                on modern scams, emails, or AI impersonation.
+              </p>
+              <p>
+                Duplicates were removed before the split. Near-duplicates may
+                remain. Short, unfamiliar, and non-English messages receive a
+                limited-context notice.
+              </p>
+              <p>
+                No external URL reputation checks, identity verification, or
+                AI-content detection. No claimed reduction in fraud.
+              </p>
+              <a
+                href="https://archive.ics.uci.edu/dataset/228/sms%2Bspam%2Bcollection"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Dataset & attribution · CC BY 4.0 ↗</a
+              >
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
