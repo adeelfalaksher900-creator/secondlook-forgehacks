@@ -1,0 +1,18 @@
+[
+  {
+    "view": "check",
+    "violations": []
+  },
+  {
+    "view": "guide",
+    "violations": []
+  },
+  {
+    "view": "model",
+    "violations": []
+  },
+  {
+    "view": "results",
+    "violations": []
+  }
+]
