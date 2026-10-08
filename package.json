@@ -1,1 +1,16 @@
-{"name":"secondlook-forgehacks","version":"1.0.0","private":true,"type":"module","scripts":{"test":"node tests/engine.mjs","start":"python -m http.server 4186 --directory public"}}
+{
+  "name": "secondlook-forgehacks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/engine.mjs",
+    "start": "python -m http.server 4186 --directory public",
+    "test:browser": "node tests/browser.cjs",
+    "test:a11y": "node tests/accessibility.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "axe-core": "4.14.0"
+  }
+}

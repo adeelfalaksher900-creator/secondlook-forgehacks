@@ -1,0 +1,23 @@
+A scholarship offer can look exciting. A missed delivery can feel urgent. And a message from university support can sound convincing. But what should you do before clicking, paying, or sharing a code?
+
+This is SecondLook. We built it for the AI and Cybersecurity track at ForgeHacks. It gives you a private moment to inspect a message and choose how to verify it.
+
+Let's try the scholarship example. The message asks for a processing fee, sets a two-hour deadline, and says to keep it confidential. We check it, then read the actual cues. Each observation points to words in the message and explains why that request deserves a pause.
+
+The trained model adds another kind of evidence: language patterns it learned from public SMS examples. You can expand its explanation to see which phrases increased the spam-pattern score. That score is not the probability that a message is fraudulent.
+
+Next, a delivery message. SecondLook notices the payment request, pressure, and unusual link structure. The address is displayed as text. The app never opens it or sends your message to an external service.
+
+An account message asks for a password and a verification code. The next step is to contact the university through a channel you already know, rather than replying with private information.
+
+Now compare an ordinary study-group message. It has fewer cues, but the interface still avoids saying safe. The model cannot establish who sent it.
+
+A short message does not give the model enough useful context. Instead of showing a confident score, SecondLook explains the limitation.
+
+The verification guide helps you pause, find your own trusted contact, and confirm the exact request. If you have already acted, it points you toward the relevant official support or payment provider.
+
+Behind the interface is a real trained model: TF-IDF word and phrase features, followed by logistic regression. We removed normalized duplicates before splitting the dataset. On 1,026 held-out historical SMS messages, spam precision was 97.17 percent and recall was 81.75 percent. JavaScript inference matches Python across every held-out example.
+
+Those results are not modern scam accuracy. SecondLook does not verify identities or detect AI-generated content. Its value is clear evidence and a practical next step, with your message staying on your device.
+
+SecondLook. Check before you click.
