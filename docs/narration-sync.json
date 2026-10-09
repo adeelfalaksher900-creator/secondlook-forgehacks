@@ -1,0 +1,121 @@
+{
+  "provider": "vidIQ voiceover",
+  "voice": "Liam - Energetic, Social Media Creator",
+  "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
+  "source_audio_seconds": 157.23102040816326,
+  "output_seconds": 160,
+  "fps": 30,
+  "method": "Continuous original HyperFrames frames retimed by section to narration paragraph boundaries; no slide replacement. AAC narration normalized to -16 LUFS target.",
+  "sections": [
+    {
+      "video_source": [
+        0,
+        8
+      ],
+      "output": [
+        0,
+        24
+      ]
+    },
+    {
+      "video_source": [
+        8,
+        31
+      ],
+      "output": [
+        24,
+        41
+      ]
+    },
+    {
+      "video_source": [
+        31,
+        45
+      ],
+      "output": [
+        41,
+        56
+      ]
+    },
+    {
+      "video_source": [
+        45,
+        60
+      ],
+      "output": [
+        56,
+        71
+      ]
+    },
+    {
+      "video_source": [
+        60,
+        78
+      ],
+      "output": [
+        71,
+        82
+      ]
+    },
+    {
+      "video_source": [
+        78,
+        98
+      ],
+      "output": [
+        82,
+        92
+      ]
+    },
+    {
+      "video_source": [
+        98,
+        112
+      ],
+      "output": [
+        92,
+        101
+      ]
+    },
+    {
+      "video_source": [
+        112,
+        127
+      ],
+      "output": [
+        101,
+        113
+      ]
+    },
+    {
+      "video_source": [
+        127,
+        145
+      ],
+      "output": [
+        113,
+        141
+      ]
+    },
+    {
+      "video_source": [
+        145,
+        153
+      ],
+      "output": [
+        141,
+        154
+      ]
+    },
+    {
+      "video_source": [
+        153,
+        160
+      ],
+      "output": [
+        154,
+        160
+      ]
+    }
+  ]
+}

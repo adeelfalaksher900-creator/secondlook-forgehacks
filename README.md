@@ -101,6 +101,6 @@ npx --yes hyperframes@0.8.141 check video
 npx --yes hyperframes@0.8.141 render video --fps 30 --quality high --output media/SecondLook_Visual_Demo_1080p.mp4
 ```
 
-The capture uses actual app actions and records pointer movement; HyperFrames renders 4,800 frames with deterministic title and caption animations. The 1440×810 workflow capture is cropped from Playwright’s padded recording and scaled into the 1920×1080 composition. The current visual cut is silent; ElevenLabs narration and YouTube/Vimeo publication are pending. Do not label this an ElevenLabs-narrated video.
+The capture uses actual app actions and records pointer movement; HyperFrames renders 4,800 frames with deterministic title and caption animations. The 1440×810 workflow capture is cropped from Playwright’s padded recording and scaled into the 1920×1080 composition. The final 160-second demo includes Liam synthetic narration generated through vidIQ using verified Free-plan credits. Sections retain the continuous HyperFrames workflow and are retimed to narration paragraphs. English WebVTT captions are provided. YouTube/Vimeo publication is pending account verification.
 
 The public video player serves a web-optimized 1080p copy. Video binaries are release artifacts, not bundled source; to preview your own render locally, copy the MP4 to `public/demo.mp4` and your poster to `public/demo-poster.png`.

@@ -1,11 +1,13 @@
 {
-  "status": "pending account access and verification of free credit availability",
-  "provider": "ElevenLabs",
+  "status": "completed",
+  "provider": "vidIQ voiceover",
   "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
   "voice_name": "Liam - Energetic, Social Media Creator",
-  "selection_basis": "Listed by the ElevenLabs connector as young adult, warm, confident English voice; stock voice, no cloning",
+  "selection_basis": "Young adult with energy and warmth, stock voice listed by vidIQ; no cloning",
   "script": "NARRATION.txt",
   "word_count": 377,
   "target_seconds": 160,
-  "generation_performed": false
+  "generation_performed": true,
+  "free_plan_credits_used": 42,
+  "job_id": "job_56bda0fe-a135-4092-ab1f-02b129e1080c"
 }

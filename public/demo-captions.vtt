@@ -1,0 +1,172 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.860
+A scholarship offer can look exciting.
+
+2
+00:00:02.400 --> 00:00:04.160
+A missed delivery can feel urgent.
+
+3
+00:00:04.740 --> 00:00:07.800
+And a message from university support can sound convincing.
+
+4
+00:00:08.680 --> 00:00:12.480
+But what should you do before clicking, paying, or sharing a
+code?
+
+5
+00:00:13.140 --> 00:00:14.680
+This is SecondLook.
+
+6
+00:00:15.160 --> 00:00:18.440
+We built it for the AI and cybersecurity track at ForgeHacks.
+
+7
+00:00:19.040 --> 00:00:23.460
+It gives you a private moment to inspect a message and choose how
+to verify it.
+
+8
+00:00:24.120 --> 00:00:25.640
+Let's try the scholarship example.
+
+9
+00:00:26.240 --> 00:00:31.780
+The message asks for a processing fee sets a two-hour deadline
+and says to keep it confidential.
+
+10
+00:00:32.680 --> 00:00:35.140
+We check it, then read the actual cues.
+
+11
+00:00:35.860 --> 00:00:41.020
+Each observation points to words in the message and explains why
+that request deserves a pause.
+
+12
+00:00:41.840 --> 00:00:43.980
+The trained model adds another kind of evidence.
+
+13
+00:00:44.860 --> 00:00:47.440
+Language patterns it learned from public SMS examples.
+
+14
+00:00:48.260 --> 00:00:52.560
+You can expand its explanation to see which phrases increased the
+spam pattern score.
+
+15
+00:00:52.560 --> 00:00:56.080
+That score is not the probability that a message is fraudulent.
+
+16
+00:00:57.360 --> 00:00:58.700
+Next, a delivery message.
+
+17
+00:00:59.520 --> 00:01:03.940
+SecondLook notices the payment request, pressure, and unusual
+link structure.
+
+18
+00:01:04.640 --> 00:01:06.360
+The address is displayed as text.
+
+19
+00:01:06.880 --> 00:01:10.520
+The app never opens it or sends your message to an external
+service.
+
+20
+00:01:11.320 --> 00:01:14.840
+An account message asks for a password and a verification code.
+
+21
+00:01:15.440 --> 00:01:19.340
+The next step is to contact the university through a channel you
+already know,
+
+22
+00:01:19.580 --> 00:01:21.520
+rather than replying with private information.
+
+23
+00:01:21.520 --> 00:01:24.540
+Now, compare an ordinary study group message.
+
+24
+00:01:25.140 --> 00:01:29.260
+It has fewer cues, but the interface still avoids saying safe.
+
+25
+00:01:29.940 --> 00:01:32.000
+The model cannot establish who sent it.
+
+26
+00:01:32.580 --> 00:01:35.680
+A short message does not give the model enough useful context.
+
+27
+00:01:36.360 --> 00:01:40.000
+Instead of showing a confident score, SecondLook explains the
+limitation.
+
+28
+00:01:40.920 --> 00:01:47.100
+The verification guide helps you pause, find your own trusted
+contact, and confirm the exact request.
+
+29
+00:01:47.100 --> 00:01:53.060
+If you have already acted, it points you toward the relevant
+official support or payment provider.
+
+30
+00:01:53.860 --> 00:01:56.100
+Behind the interface is a real trained model.
+
+31
+00:01:57.360 --> 00:02:01.320
+TF-IDF word and phrase features followed by logistic regression.
+
+32
+00:02:02.080 --> 00:02:04.940
+We removed normalized duplicates before splitting the data set.
+
+33
+00:02:05.460 --> 00:02:13.060
+On 1,026 held out historical SMS messages, spam precision was
+97.17%
+
+34
+00:02:13.060 --> 00:02:16.540
+and recall was 81.75%.
+
+35
+00:02:16.540 --> 00:02:20.140
+JavaScript inference matches Python across every held out
+example.
+
+36
+00:02:20.980 --> 00:02:23.220
+Those results are not modern scam accuracy.
+
+37
+00:02:24.120 --> 00:02:27.980
+SecondLook does not verify identities or detect AI-generated
+content.
+
+38
+00:02:28.640 --> 00:02:33.960
+Its value is clear evidence and a practical next step with your
+message staying on your device.
+
+39
+00:02:35.040 --> 00:02:37.180
+SecondLook, check before you click.

@@ -11,7 +11,7 @@ Track: AI + Cybersecurity. The official prompt asks for AI that helps people rec
 | Execution | Public working static app, synthetic interactive examples, guide, model page, mobile layout | Unsupported languages and short/unfamiliar text suppress score |
 | Public source and README | Public GitHub; training, runtime, tests, attribution, MIT license, architecture | Development requires Python/Node; model is included |
 | Screenshots and architecture | 15 1920×1080 gallery PNGs, including real app states and architecture | Mobile gallery panel is a presentation of an actual mobile capture |
-| Public 2–4 minute video | 160-second continuous actual workflow; deterministic HyperFrames composition, captions | ElevenLabs narration pending sign-in/free-credit verification; no YouTube/Vimeo upload |
+| Public 2–4 minute video | 160-second continuous actual workflow; deterministic HyperFrames composition, captions | Liam narration completed through vidIQ Free-plan credits; English captions included; YouTube/Vimeo upload pending Google account verification |
 | Security and accessibility | XSS test, no URL fetches, no storage/inference backend; CSP; four axe-tested states | Targeted checks, not independent security or accessibility certification |
 | Presentation | Problem, explanation, limitations, impact and next steps in Devpost story | No claim of guaranteed award or real-world safety |
 
