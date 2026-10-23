@@ -1,98 +1,154 @@
 # SecondLook
 
-**Check before you click.** A private second look at suspicious messages, built for ForgeHacks Online 2026, **AI + Cybersecurity**.
+**Check before you click. A private second look at suspicious messages.**
 
-SecondLook helps students and everyday readers pause before acting on a convincing text or email. A trained browser-based classifier, observable request cues, and link-structure checks explain what deserves attention. The result always leads to independent verification, never a “safe” verdict.
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white)
+![License: MIT](https://img.shields.io/badge/code-MIT-34586F?style=flat-square)
+
+SecondLook helps readers pause before acting on a convincing text or email. A browser-based classifier, observable request cues, and link-structure checks show what deserves attention and lead to independent verification. The app never labels a message “safe.”
+
+[Open the app](https://secondlook-forgehacks.vercel.app/) · [Demo player](https://secondlook-forgehacks.vercel.app/demo.html) · [Evaluation](docs/evaluation.json) · [Security](docs/security.md)
+
+Built for **ForgeHacks Online 2026 — AI + Cybersecurity** by **Adeel Falak Sher and Raouf Khalid**.
 
 ## Try it
 
-Open the deployed app, select **Scholarship fee**, and choose **Check this message**. Review the payment, urgency, and secrecy cues; expand the model evidence; then open the verification guide. Compare **Study group**: fewer cues still does not verify the sender.
+1. Choose **Scholarship fee** and select **Check this message**.
+2. Review the payment, urgency, secrecy, and link observations.
+3. Expand the model evidence, then open the verification guide.
+4. Compare **Study group**: fewer detected cues still do not verify the sender.
 
-[Open SecondLook](https://secondlook-forgehacks.vercel.app/) · [Watch the 2:40 demo](https://secondlook-forgehacks.vercel.app/demo.html) · [Public source](https://github.com/adeelfalaksher900-creator/secondlook-forgehacks). Demo status and publication receipts are recorded in `docs/publishing.json`.
+No account, backend, API key, or paid inference service is required.
 
 ## Run locally
 
-Requires Python 3 and Node.js 22+ for tests. No backend, account, API key, or paid AI service.
+Use Python 3 to serve the application:
 
 ```sh
-python -m http.server 4186 --directory public
+git clone https://github.com/adeelfalaksher900-creator/secondlook-forgehacks.git
+cd secondlook-forgehacks
+python3 -m http.server 4186 --directory public
 ```
 
-Open http://localhost:4186. The included model is ready to use. `npm test` checks JavaScript inference against every held-out Python prediction.
-
-## Actual AI, not a hosted API wrapper
-
-- Dataset: [UCI SMS Spam Collection](https://archive.ics.uci.edu/dataset/228/sms%2Bspam%2Bcollection), Almeida & Hidalgo (2011), DOI [10.24432/C5CC84](https://doi.org/10.24432/C5CC84), **CC BY 4.0**.
-- 5,574 source rows → 5,126 unique normalized messages, deduplicated **before** splitting.
-- Stratified 80/20 split, seed 42; 4,100 training / 1,026 test messages.
-- TF-IDF word unigrams and bigrams, minimum document frequency 2, sublinear TF, L2 normalization; 9,819 learned features.
-- Logistic regression, C=8. Parameters and vocabulary exported to `public/model.json`.
-- JavaScript implements identical preprocessing and inference locally. Every held-out probability matches Python within 1e-10.
-- Explanations show the largest positive linear feature contributions. Separate deterministic cues inspect money, access codes, pressure, rewards, secrecy, and URL structure.
-- Short, unfamiliar, and detected non-English messages receive a context limitation notice and no model score. This is a heuristic scope check, not reliable language identification.
-
-## Evaluation
-
-Measured on the held-out **historical SMS spam** dataset at threshold 0.5:
-
-| Metric | Result |
-|---|---:|
-| Spam precision | 97.17% |
-| Spam recall | 81.75% |
-| Spam F1 | 88.79% |
-| Average precision | 97.19% |
-| Brier score | 0.01814 |
-| True negatives / false positives | 897 / 3 |
-| False negatives / true positives | 23 / 103 |
-
-Full metadata, hash, and limitations: `docs/evaluation.json`. These are classifier metrics, **not** a measurement of the combined triage workflow or real-world fraud prevention. No claim is made about modern phishing accuracy, identity verification, or AI-content detection. Near-duplicate templates may remain across splits. Test-set distributions differ from incoming emails or modern scams.
-
-## Reproduce training
-
-```sh
-python -m pip install -r ml/requirements.txt
-curl -L 'https://archive.ics.uci.edu/static/public/228/sms%2Bspam%2Bcollection.zip' -o ml/sms.zip
-python ml/train.py
-npm test
-```
-
-Training regenerates the model, metrics, and parity fixtures. Raw messages are not committed as a separate dataset. Parity fixtures contain public dataset examples and retain their CC BY 4.0 attribution.
+Open **http://localhost:4186**. The committed model is ready to use.
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-  A[Message in browser] --> B[Normalize and tokenize]
-  B --> C[Local TF-IDF classifier]
-  A --> D[Request cues and URL structure]
-  C --> E[Evidence and verification plan]
-  D --> E
+    A[Message in browser] --> B[Normalize and tokenize]
+    B --> C[Local TF-IDF classifier]
+    A --> D[Request cues and URL structure]
+    C --> E[Evidence and verification plan]
+    D --> E
+    F[Offline Python training] --> G[Static model artifact]
+    G --> C
 ```
 
-Training occurs offline in Python. Runtime requests only local static assets. Suspicious URLs are never fetched. Output text uses DOM textContent, not HTML injection. No third-party analytics, cookies, browser storage, telemetry, inference calls, or remote message persistence. The host still receives ordinary page/asset requests; browser extensions and the device remain outside this app's privacy boundary.
+| Component | Responsibility |
+| --- | --- |
+| `public/engine.js` | Normalization, TF-IDF inference, request cues, and URL observations |
+| `public/app.js` | Input lifecycle, result rendering, and navigation |
+| `public/model.json` | Vocabulary, weights, IDF values, and model metadata |
+| `ml/train.py` | Reproducible training and artifact export |
+| `tests/` | Prediction parity, behavior, browser, and accessibility checks |
+| `vercel.json` | Deployment security-header configuration |
+| `video/` | Demo composition and finishing scripts |
 
-## Accessibility and testing
+The browser loads static assets and runs inference locally. It does not fetch suspicious URLs. Results use literal text rendering, and changing the input clears stale results.
 
-Keyboard controls, named message input, live result region, mobile layout, reduced-motion support, visible focus rings, and semantic headings. Four states tested with axe-core WCAG 2.0/2.1 AA tags: no automated violations; not a claim of complete accessibility certification. Behavior and XSS checks are in `tests/browser.cjs`; evidence is in `docs/`.
+## Model
 
-## Team and AI assistance
+The classifier uses the **UCI SMS Spam Collection**, TF-IDF word unigrams and bigrams, and logistic regression. The training pipeline removes exact normalized duplicates before a stratified 80/20 split with seed 42.
 
-Assigned responsibilities: **Adeel Falak Sher** — product direction, user flow, frontend and presentation. **Rauf Khalid** — ML evaluation, security review and demo verification. Implementation and documentation were AI-assisted. These responsibility assignments do not represent independently verified past contributions.
+| Dataset and model | Committed configuration |
+| --- | ---: |
+| Source rows | 5,574 |
+| Unique normalized messages | 5,126 |
+| Training / test messages | 4,100 / 1,026 |
+| Learned features | 9,819 |
+| Logistic regression C | 8 |
 
-## Impact and next steps
+JavaScript mirrors the Python preprocessing and inference. The parity test checks every held-out prediction with a probability-difference threshold of `1e-10`.
 
-The shipped value is a low-friction private way to inspect a request and decide how to verify it. We have not run a user study or measured money saved. Next: consented usability tests, a modern independently labeled scam dataset, near-duplicate grouped evaluation, multilingual models, and measured false-alarm rates.
+Request cues separately inspect private access, payments, pressure, rewards, and secrecy. Link checks inspect structure without establishing ownership or reputation. Short, unfamiliar, and detected non-Latin input suppresses the model score; this is a heuristic scope check, not reliable language identification.
 
-## License
+## Evaluation
 
-Project code: MIT (`LICENSE`). Dataset-derived fixtures: CC BY 4.0, attribution above. Third-party tooling licenses and media provenance: `docs/third-party.md`.
+The committed [evaluation report](docs/evaluation.json) records the following results at threshold 0.5 on held-out **historical English SMS spam**:
 
-Browser development checks require `npm install` and `npx playwright install chromium`. Run checks and capture scripts from the repository root while the local server is running. Set `SECONDLOOK_BROWSER_PATH` only when using a custom Chromium executable. Automated axe checks need the project development dependencies.
+| Metric | Recorded result |
+| --- | ---: |
+| Spam precision | 97.17% |
+| Spam recall | 81.75% |
+| Spam F1 | 88.79% |
+| Average precision | 97.19% |
+| Brier score | 0.01814 |
 
+| Actual class | Predicted ham | Predicted spam |
+| --- | ---: | ---: |
+| Ham | 897 | 3 |
+| Spam | 23 | 103 |
 
-## Reproduce the continuous demo
+These evaluate the classifier, not the combined workflow or real-world fraud prevention. Near-duplicate templates may remain across splits. Modern phishing, unsupported languages, quoted or negated requests, and domain shift remain important failure cases.
 
-With the app server running and development dependencies installed:
+## Verify
+
+Use Node.js 22+ for the development checks:
+
+```sh
+npm test
+npm install
+npx playwright install chromium
+```
+
+With the local application server running in another terminal:
+
+```sh
+npm run test:browser
+npm run test:a11y
+```
+
+Set `SECONDLOOK_BROWSER_PATH` only when supplying a custom Chromium executable. Browser scripts also write inspection captures and reports. Committed [browser results](docs/browser-checks.json) record 12 checks; [accessibility results](docs/accessibility.json) record no automated violations in four inspected states. These are targeted checks, not a comprehensive security audit or accessibility certification.
+
+## Reproduce training
+
+```sh
+python3 -m pip install -r ml/requirements.txt
+curl -L 'https://archive.ics.uci.edu/static/public/228/sms%2Bspam%2Bcollection.zip' -o ml/sms.zip
+python3 ml/train.py
+npm test
+```
+
+Training regenerates `public/model.json`, `docs/evaluation.json`, and `tests/parity.json`. Dataset files and derived examples retain their original dataset attribution and license.
+
+## Deploy
+
+Publish the `public/` directory as a static site. On Vercel, use `public` as the output directory and retain the repository's `vercel.json` header configuration. Verify live headers after deployment.
+
+There are no runtime npm dependencies. Training and browser-test dependencies are separate from the delivered app.
+
+## Privacy and scope
+
+Messages are not saved by the app or sent to an inference API. The runtime uses no browser storage, analytics, cookies, or message telemetry. The hosting provider still receives ordinary asset requests; browser extensions and device security sit outside the app's boundary.
+
+A spam-pattern score does not establish authenticity, malicious intent, or safety. The app has not demonstrated fraud reduction or measured user outcomes. Its next step is consented usability testing and evaluation against a modern independently labeled dataset.
+
+## Project docs
+
+- [Security review and residual risks](docs/security.md)
+- [Evaluation method and metrics](docs/evaluation.json)
+- [Third-party licenses and media provenance](docs/third-party.md)
+- [Publication record](docs/publishing.json)
+- [Judging review](docs/judging-review.md)
+- [Video composition](video/)
+
+<details>
+<summary>Reproduce the visual demo</summary>
+
+Run the capture from the repository root with the app server running and development dependencies installed:
 
 ```sh
 node tests/record.cjs
@@ -101,8 +157,15 @@ npx --yes hyperframes@0.8.141 check video
 npx --yes hyperframes@0.8.141 render video --fps 30 --quality high --output media/SecondLook_Visual_Demo_1080p.mp4
 ```
 
-The capture uses actual app actions and records pointer movement; HyperFrames renders 4,800 frames with deterministic title and caption animations. The 1440×810 workflow capture is cropped from Playwright’s padded recording and scaled into the 1920×1080 composition. The final 160-second demo includes Liam synthetic narration generated through vidIQ using verified Free-plan credits. Sections retain the continuous HyperFrames workflow and are retimed to narration paragraphs. English WebVTT captions are provided. YouTube/Vimeo publication is pending account verification.
+Video binaries are separate release artifacts. Local playback expects `public/demo.mp4` and `public/demo-poster.png`. The finishing scripts expect their original master and narration inputs; see the retained source and provenance record before reproducing the narrated edit.
 
-The public video player serves a web-optimized 1080p copy. Video binaries are release artifacts, not bundled source; to preview your own render locally, copy the MP4 to `public/demo.mp4` and your poster to `public/demo-poster.png`.
+</details>
 
-To reproduce the narrated edit after generating the stock voice audio, run `python video/finish-narrated-video.py` followed by `python video/polish-ending.py`. Both expect the original HyperFrames master and `media/SecondLook_Narration.mp3`. The final closing card is a deliberate six-second brand outro.
+## Contribute
+
+Use focused pull requests and run the relevant checks. Include dataset or model provenance when changing inference, and keep private messages and credentials out of issues, fixtures, and commits.
+
+## License
+
+Project code uses [MIT](LICENSE). The **UCI SMS Spam Collection** is attributed to Almeida and Hidalgo (2011), DOI [10.24432/C5CC84](https://doi.org/10.24432/C5CC84), under **CC BY 4.0**. Dataset-derived fixtures retain that attribution. Third-party tooling and media use their respective terms, recorded in [docs/third-party.md](docs/third-party.md).
+
